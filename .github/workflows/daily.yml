@@ -1,0 +1,26 @@
+name: Daily Bluesky Post
+
+on:
+  schedule:
+    - cron: '0 11 * * *'   # 11:00 UTC = 12:00 MEZ (bzw. 13:00 MESZ)
+  workflow_dispatch:         # erlaubt manuelles Auslösen zum Testen
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Abhängigkeiten installieren
+        run: pip install requests
+
+      - name: Bot ausführen
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_PASSWORD: ${{ secrets.BSKY_PASSWORD }}
+        run: python bot.py
