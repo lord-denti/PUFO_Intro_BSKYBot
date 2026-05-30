@@ -44,5 +44,7 @@ post = requests.post(
         }
     }
 )
+print("Status:", post.status_code)
+print("Antwort:", post.text)
 post.raise_for_status()
 print("✅ Erfolgreich gepostet:", text)
