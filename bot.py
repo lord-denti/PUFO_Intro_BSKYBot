@@ -21,15 +21,19 @@ with open("intros.csv", newline="", encoding="utf-8") as f:
 day_index = date.today().toordinal() % len(rows)
 entry = rows[day_index]
 
-print("Eintrag:", entry)
-
 # --- Text zusammenbauen ---
 audio_url = entry["audio_url"]
 text = (
-    f"Das fantastische Intro heute stammt aus Folge {entry['id']}, "
-    f"erschienen am {entry['date']}, und wurde von {entry['name']} gemacht. "
+    f"Das heutige fantastische Intro kommt aus Folge {entry['id']} "
+    f"vom {entry['date']} und wurde von {entry['name']} kreiert. "
     f"Viel Spaß beim Hören! 🎧\n{audio_url}"
 )
+
+# --- Link-Position im Text berechnen (als UTF-8 Bytes) ---
+text_bytes = text.encode("utf-8")
+url_bytes = audio_url.encode("utf-8")
+link_start = text_bytes.index(url_bytes)
+link_end = link_start + len(url_bytes)
 
 print("Textlänge:", len(text))
 print("Text:", text)
@@ -45,6 +49,20 @@ post = requests.post(
             "$type": "app.bsky.feed.post",
             "text": text,
             "createdAt": date.today().isoformat() + "T12:00:00Z",
+            "facets": [
+                {
+                    "index": {
+                        "byteStart": link_start,
+                        "byteEnd": link_end
+                    },
+                    "features": [
+                        {
+                            "$type": "app.bsky.richtext.facet#link",
+                            "uri": audio_url
+                        }
+                    ]
+                }
+            ]
         }
     }
 )
