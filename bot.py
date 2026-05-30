@@ -18,17 +18,21 @@ did = session["did"]
 with open("intros.csv", newline="", encoding="utf-8") as f:
     rows = list(csv.DictReader(f))
 
-# Nimm den Eintrag des Tages (rotierend durch die Liste)
 day_index = date.today().toordinal() % len(rows)
 entry = rows[day_index]
+
+print("Eintrag:", entry)
 
 # --- Text zusammenbauen ---
 audio_url = entry["audio_url"]
 text = (
     f"Das fantastische Intro heute stammt aus Folge {entry['id']}, "
-    f"erschienen am {entry['date']}, und wurde von {entry['name']} gemacht. "
+    f"erschienen am {entry['date']}, und wurde von {entry['author']} gemacht. "
     f"Viel Spaß beim Hören! 🎧\n{audio_url}"
 )
+
+print("Textlänge:", len(text))
+print("Text:", text)
 
 # --- Auf Bluesky posten ---
 post = requests.post(
@@ -47,4 +51,4 @@ post = requests.post(
 print("Status:", post.status_code)
 print("Antwort:", post.text)
 post.raise_for_status()
-print("✅ Erfolgreich gepostet:", text)
+print("✅ Erfolgreich gepostet!")
