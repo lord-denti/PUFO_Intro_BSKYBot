@@ -25,7 +25,7 @@ entry = rows[day_index]
 # --- Text zusammenbauen ---
 audio_url = entry["audio_url"]
 text = (
-    f"Das fantastische Intro heute stammt aus Folge {entry['id']}, ",
+    f"Das fantastische Intro heute stammt aus Folge {entry['id']}, "
     f"erschienen am {entry['date']}, und wurde von {entry['name']} gemacht. "
     f"Viel Spaß beim Hören! 🎧\n{audio_url}"
 )
