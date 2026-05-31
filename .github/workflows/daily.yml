@@ -2,7 +2,7 @@ name: Daily Bluesky Post
 
 on:
   schedule:
-    - cron: '21 2 * * *'   # 11:00 UTC = 12:00 MEZ (bzw. 13:00 MESZ)
+    - cron: '15 3 * * *'   # 11:00 UTC = 12:00 MEZ (bzw. 13:00 MESZ)
   workflow_dispatch:         # erlaubt manuelles Auslösen zum Testen
 
 jobs:
